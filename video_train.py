@@ -15,18 +15,32 @@ from torch.autograd import Variable
 from dataloaders.dataset import VideoDataset
 from models import C3D_model, R2Plus1D_model, R3D_model
 
+import argparse
+ap = argparse.ArgumentParser()
+ap.add_argument("--cuda", type=str)
+ap.add_argument("--modelName", type=str)
+ap.add_argument("--nEpochs", type=int)
+ap.add_argument("--dataset", type=str)
+ap.add_argument("--save_dir", type=str)
+
+args = ap.parse_args()
+cunda = args.cuda # "cuda:2"
+modelName = args.modelName # C3D or R2Plus1D or R3D
+nEpochs = args.nEpochs # 20
+dataset = args.dataset # 'ucf101', 'hmdb51'
+save_dir = args.save_dir  #'/home/yinghua/pycharm/VRank/target_models'
+
+# python video_train.py --cuda 'cuda:0' --modelName 'R2Plus1D' --nEpochs 20 --dataset 'ucf101' --save_dir '/home/yinghua/pycharm/VRank/target_models'
+
 # Use GPU if available else revert to CPU
-device = torch.device("cuda:2" if torch.cuda.is_available() else "cpu")
+device = torch.device(cunda if torch.cuda.is_available() else "cpu")
 print("Device being used:", device)
 
-nEpochs = 20  # Number of epochs for training
 resume_epoch = 0  # Default is 0, change if want to resume
 useTest = True # See evolution of the test set when training
 nTestInterval = 20 # Run on test set every nTestInterval epochs
 snapshot = 50 # Store a model every snapshot epochs
 lr = 1e-2 # Learning rate
-
-dataset = 'ucf101' # Options: hmdb51 or ucf101
 
 if dataset == 'hmdb51':
     num_classes=51
@@ -37,11 +51,8 @@ else:
     raise NotImplementedError
 
 exp_name = os.path.dirname(os.path.abspath(__file__)).split('/')[-1]
-
-
-save_dir = '/home/yinghua/pycharm/VRank/target_models'
-modelName = 'R3D' # Options: C3D or R2Plus1D or R3D
 saveName = modelName + '-' + dataset
+
 
 def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=lr,
                 num_epochs=nEpochs, save_epoch=snapshot, useTest=useTest, test_interval=nTestInterval):
@@ -189,6 +200,7 @@ def train_model(dataset=dataset, save_dir=save_dir, num_classes=num_classes, lr=
     }, os.path.join(save_dir, 'models', saveName + '_epoch-' + str(epoch) + '.pth.tar'))
 
     writer.close()
+
 
 if __name__ == "__main__":
     train_model()
