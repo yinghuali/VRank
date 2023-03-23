@@ -1,0 +1,3 @@
+python train_ucf101_R3D.py
+python train_ucf101_C3D.py
+python train_ucf101_R2Plus1D.py
