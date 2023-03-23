@@ -136,3 +136,4 @@ data/*
 *.ipynb
 README.txt
 readme.txt
+target_models/*
