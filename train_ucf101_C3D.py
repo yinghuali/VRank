@@ -16,7 +16,7 @@ from dataloaders.dataset import VideoDataset
 from models import C3D_model, R2Plus1D_model, R3D_model
 
 # Use GPU if available else revert to CPU
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
 print("Device being used:", device)
 
 nEpochs = 100  # Number of epochs for training
