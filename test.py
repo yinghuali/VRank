@@ -17,6 +17,7 @@ test_x = pickle.load(open('./data/pkl_data/ucf101_test_x.pkl', 'rb'))
 val_x = pickle.load(open('./data/pkl_data/ucf101_val_x.pkl', 'rb'))
 train_x = pickle.load(open('./data/pkl_data/ucf101_train_x.pkl', 'rb'))
 
+
 if modelName == 'C3D':
     model = C3D_model.C3D(num_classes=num_classes, pretrained=False)
 if modelName == 'R2Plus1D':

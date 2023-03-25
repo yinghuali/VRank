@@ -27,6 +27,7 @@ args = ap.parse_args()
 
 lr = 0.01
 
+
 def get_correct_num(outputs, labels):
     _, predict = torch.max(outputs.data, 1)
     correct_num = (labels == predict).sum().item()
