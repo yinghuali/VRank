@@ -173,7 +173,6 @@ class R3DClassifier(nn.Module):
             layer_sizes (tuple): An iterable containing the number of blocks in each layer
             block_type (Module, optional): Type of block that is to be used to form the layers. Default: SpatioTemporalResBlock.
         """
-
     def __init__(self, num_classes, layer_sizes, block_type=SpatioTemporalResBlock, pretrained=False):
         super(R3DClassifier, self).__init__()
 

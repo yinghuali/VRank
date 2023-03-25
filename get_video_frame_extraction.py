@@ -49,6 +49,7 @@ def get_pic_list(path_video):
     return video_pic_np
 
 
+
 def get_all_pic_list(path_video_list, label_np):
     all_video_pic_np = []
     all_label_np = []

@@ -286,6 +286,7 @@ def get_10x_lr_params(model):
             if k.requires_grad:
                 yield k
 
+
 # if __name__ == "__main__":
 #     import torch
 #     inputs = torch.rand(1, 3, 16, 112, 112)
