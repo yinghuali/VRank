@@ -25,6 +25,7 @@ args = ap.parse_args()
 
 # python video_model_train.py --cuda 'cuda:1' --model_name 'R3D' --epochs 100 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 8 --save_model_path './target_models/ucf101_R3D'
 
+
 lr = 0.01
 
 
