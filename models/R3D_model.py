@@ -219,10 +219,10 @@ def get_10x_lr_params(model):
                 yield k
 
 
-if __name__ == "__main__":
-    import torch
-    inputs = torch.rand(1, 3, 16, 112, 112)
-    net = R3DClassifier(101, (2, 2, 2, 2), pretrained=False)
-
-    outputs = net.forward(inputs)
-    print(outputs.size())
+# if __name__ == "__main__":
+#     import torch
+#     inputs = torch.rand(20, 3, 16, 112, 112)
+#     net = R3DClassifier(101, (2, 2, 2, 2))
+#
+#     outputs = net.forward(inputs)
+#     print(outputs.size())

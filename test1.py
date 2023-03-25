@@ -1,4 +1,3 @@
-#coding:utf8
 import timeit
 from datetime import datetime
 import socket
