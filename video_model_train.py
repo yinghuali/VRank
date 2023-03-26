@@ -1,12 +1,13 @@
 import torch
 import pickle
+import numpy as np
 from sklearn.model_selection import train_test_split
 from models.R3D_model import R3DClassifier
 import torch.utils.data as Data
-
+from tqdm import tqdm
 import torch
 from tensorboardX import SummaryWriter
-from torch import nn
+from torch import nn, optim
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
 
@@ -23,8 +24,8 @@ ap.add_argument("--batch_size", type=int)
 ap.add_argument("--save_model_path", type=str)
 args = ap.parse_args()
 
-# python video_model_train.py --cuda 'cuda:1' --model_name 'R3D' --epochs 100 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 8 --save_model_path './target_models/ucf101_R3D'
-
+# python video_model_train.py --cuda 'cuda:1' --model_name 'R3D' --epochs 61 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 8 --save_model_path './target_models/ucf101_R3D'
+# nohup python video_model_train.py --cuda 'cuda:1' --model_name 'R3D' --epochs 101 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 8 --save_model_path './target_models/ucf101_R3D' > train.log 2>&1 &
 
 lr = 0.01
 
@@ -38,61 +39,62 @@ def get_correct_num(outputs, labels):
 def train_model():
     device = torch.device(args.cuda if torch.cuda.is_available() else "cpu")
     x = pickle.load(open(args.path_x, 'rb'))
-    x.resize((len(x), 3, 16, 112, 112))
+    x = np.transpose(x, (0, 4, 1, 2, 3))
     y = pickle.load(open(args.path_y, 'rb'))
 
-    train_x, test_x, train_y, test_y = train_test_split(x, y, test_size=0.3, random_state=17)
-    x_train_t = torch.from_numpy(train_x).float()
-    x_test_t = torch.from_numpy(test_x).float()
-    y_train_t = torch.from_numpy(train_y).float()
-    y_test_t = torch.from_numpy(test_y).float()
+    train_x_, test_x, train_y_, test_y = train_test_split(x, y, test_size=0.3, random_state=17)
+    train_x, val_x, train_y, val_y = train_test_split(train_x_, train_y_, test_size=0.3, random_state=17)
+
+    x_train_t = torch.from_numpy(train_x)
+    y_train_t = torch.from_numpy(train_y)
 
     dataset = Data.TensorDataset(x_train_t, y_train_t)
     dataloader = Data.DataLoader(dataset=dataset, batch_size=args.batch_size, shuffle=True)
 
-
     if args.data_name == 'hmdb51':
         num_classes = 51
-    elif args.data_name == 'ucf101':
+    if args.data_name == 'ucf101':
         num_classes = 101
-
 
     if args.model_name == 'R3D':
         model = R3DClassifier(num_classes, (2, 2, 2, 2))
+        train_params = model.parameters()
 
     model.to(device)
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    loss_fun = nn.CrossEntropyLoss()
+    optimizer = optim.SGD(train_params, lr=lr, momentum=0.9, weight_decay=5e-4)
+    scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.1)
+    criterion = nn.CrossEntropyLoss()
+    criterion.to(device)
 
     for e in range(args.epochs):
-        epoch_correct_num = 0
-        total_samples = 0
-        for x_t, y_t in dataloader:
-            y_t = y_t.type(torch.LongTensor)
-            x_t = x_t.to(device)
-            y_t = y_t.to(device)
+        scheduler.step()
+        model.train()
+        running_corrects = 0.0
+        i = 0
+        for inputs, labels in tqdm(dataloader):
+            inputs = inputs.float()
+            inputs = Variable(inputs, requires_grad=True).to(device)
+            labels = Variable(labels).to(device)
             optimizer.zero_grad()
-            out = model(x_t)
-            loss = loss_fun(out, y_t)
+            outputs = model(inputs)
+
+            probs = nn.Softmax(dim=1)(outputs)
+            preds = torch.max(probs, 1)[1]
+            loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
-            epoch_correct_num += get_correct_num(out, y_t)
-            total_samples += y_t.size(0)
-        if e % 10 == 0:
+            running_corrects += torch.sum(preds == labels.data)
+            acc = running_corrects.double() / len(train_x)
+
+            i += 1
+            if i % 50 == 0:
+                print(acc, 'epochs =', e)
+
+        epoch_acc = running_corrects.double() / len(train_x)
+        print('epoch_acc =', epoch_acc)
+
+        if e % 10 == 0 and e > 0:
             torch.save(model, args.save_model_path+'_'+str(e)+'.pt')
-
-
-        # with torch.no_grad():
-        #     train_out = model(x_train_t)
-        # acc_train = get_acc(train_out, y_train_t)
-        # with torch.no_grad():
-        #     test_out = model(x_test_t)
-        # acc_test = get_acc(test_out, y_test_t)
-
-        # print('acc_train', acc_train)
-        # print('acc_test', acc_test)
-
-    # y_pred_test = model(x_test_t).detach().numpy()[:, 1]
 
 
 if __name__ == '__main__':

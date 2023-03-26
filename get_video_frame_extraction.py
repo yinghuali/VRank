@@ -13,6 +13,9 @@ args = ap.parse_args()
 
 # python get_video_frame_extraction.py --data_name 'ucf101' --video_dir './data/UCF-101' --save_path_x './data/pkl_data/ucf101/ucf101_x.pkl' --save_path_y './data/pkl_data/ucf101/ucf101_y.pkl'
 
+# mac
+# python get_video_frame_extraction.py --data_name 'ucf101' --video_dir './data' --save_path_x './data/pkl_data/ucf101/ucf101_x.pkl' --save_path_y './data/pkl_data/ucf101/ucf101_y.pkl'
+
 
 def get_path(path_dir_compile):
     path_list = []
