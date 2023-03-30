@@ -14,8 +14,8 @@ import pandas as pd
 
 path_x = './data/pkl_data/ucf101/ucf101_x.pkl'
 path_y = './data/pkl_data/ucf101/ucf101_y.pkl'
-path_val_pre = './target_models/ucf101_C3D_24_val_pre.pkl'
-path_test_pre = './target_models/ucf101_C3D_24_test_pre.pkl'
+path_val_pre = './target_models/ucf101_R3D_30_val_pre.pkl'
+path_test_pre = './target_models/ucf101_R3D_30_test_pre.pkl'
 path_x_embedding = './data/pkl_data/ucf101/ucf101_x_embedding.pkl'
 
 

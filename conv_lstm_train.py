@@ -1,6 +1,6 @@
 
 from utils import *
-from vrank import ConvLstm
+from models import ConvLstm
 import pickle
 import numpy as np
 from sklearn.model_selection import train_test_split
@@ -20,7 +20,7 @@ batch_size = 8
 latent_dim = 512 # The dim of the Conv FC output (default:512), LSTM的输入
 hidden_size = 256 # The number of features in the LSTM hidden state (default:256)
 lstm_layers = 10 # Number of recurrent layers (default:2)
-num_classes = 2
+num_classes = 101
 lr = 0.001
 epochs = 61
 save_model_path = './vrank_models/ucf101_R3D_vrank'

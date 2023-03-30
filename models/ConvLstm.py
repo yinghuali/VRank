@@ -9,7 +9,7 @@ from torchvision import models
 # num frames video : 5
 # latent_dim : 512
 # hidden_size : 256
-# Istm_layers: 2
+# Istm_layers: 101
 # bidirectional:True
 # cuda:0
 
