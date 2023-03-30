@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from torch import nn
 
-# python video_model_evaluation.py --cuda 'cuda:3' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --model_path './target_models/ucf101_R3D_10.pt'
+# python video_model_evaluation.py --cuda 'cuda:1' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl'  --model_path './target_models/ucf101_C3D_12.pt' --save_val_vec './target_models/ucf101_C3D_12_val_pre.pkl' --save_test_vec './target_models/ucf101_C3D_12_test_pre.pkl'
 
 import argparse
 ap = argparse.ArgumentParser()
@@ -12,6 +12,8 @@ ap.add_argument("--cuda", type=str)
 ap.add_argument("--path_x", type=str)
 ap.add_argument("--path_y", type=str)
 ap.add_argument("--model_path", type=str)
+ap.add_argument("--save_val_vec", type=str)
+ap.add_argument("--save_test_vec", type=str)
 args = ap.parse_args()
 
 
@@ -52,6 +54,7 @@ def main():
 
     miss_idx = []
     correct_n = 0
+    all_pre_vec = []
     for i in range(len(val_x)):
         x_t = val_x[i]
         x_t = np.array([x_t])
@@ -64,16 +67,21 @@ def main():
         preds = torch.max(probs, 1)[1]
 
         pre_vec = probs.cpu().numpy()[0]
+        all_pre_vec.append(pre_vec)
         pre = preds.cpu().numpy()[0]
         label = val_y[i]
         if pre != label:
             miss_idx.append(i)
         else:
             correct_n += 1
+    all_pre_vec = np.array(all_pre_vec)
+    pickle.dump(all_pre_vec, open(args.save_val_vec, 'wb'), protocol=4)
     print('val_acc:', correct_n*1.0/len(val_x))
+
 
     miss_idx = []
     correct_n = 0
+    all_pre_vec = []
     for i in range(len(test_x)):
         x_t = test_x[i]
         x_t = np.array([x_t])
@@ -86,12 +94,15 @@ def main():
         preds = torch.max(probs, 1)[1]
 
         pre_vec = probs.cpu().numpy()[0]
+        all_pre_vec.append(pre_vec)
         pre = preds.cpu().numpy()[0]
         label = test_y[i]
         if pre != label:
             miss_idx.append(i)
         else:
             correct_n += 1
+    all_pre_vec = np.array(all_pre_vec)
+    pickle.dump(all_pre_vec, open(args.save_test_vec, 'wb'), protocol=4)
     print('test_acc:', correct_n*1.0/len(test_x))
 
 

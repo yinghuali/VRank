@@ -3,10 +3,10 @@ import pickle
 import numpy as np
 from sklearn.model_selection import train_test_split
 from models.R3D_model import R3DClassifier
+from models import C3D_model, R2Plus1D_model, R3D_model
 import torch.utils.data as Data
 from tqdm import tqdm
 import torch
-from tensorboardX import SummaryWriter
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
@@ -25,9 +25,9 @@ ap.add_argument("--save_model_path", type=str)
 args = ap.parse_args()
 
 # python video_model_train.py --cuda 'cuda:1' --model_name 'R3D' --epochs 61 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 8 --save_model_path './target_models/ucf101_R3D'
-# nohup python video_model_train.py --cuda 'cuda:1' --model_name 'R3D' --epochs 101 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 8 --save_model_path './target_models/ucf101_R3D' > train.log 2>&1 &
+# nohup python video_model_train.py --cuda 'cuda:1' --model_name 'C3D' --epochs 101 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 24 --save_model_path './target_models/ucf101_C3D' > train_C3D.log 2>&1 &
 
-lr = 0.01
+lr = 0.001
 
 
 def get_correct_num(outputs, labels):
@@ -58,6 +58,9 @@ def train_model():
 
     if args.model_name == 'R3D':
         model = R3DClassifier(num_classes, (2, 2, 2, 2))
+        train_params = model.parameters()
+    if args.model_name == 'C3D':
+        model = C3D_model.C3D(num_classes=num_classes, pretrained=False)
         train_params = model.parameters()
 
     model.to(device)
@@ -93,7 +96,7 @@ def train_model():
         epoch_acc = running_corrects.double() / len(train_x)
         print('epoch_acc =', epoch_acc)
 
-        if e % 10 == 0 and e > 0:
+        if e % 3 == 0 and e > 0:
             torch.save(model, args.save_model_path+'_'+str(e)+'.pt')
 
 

@@ -6,9 +6,10 @@ from PIL import Image
 import numpy as np
 
 path_x = './data/pkl_data/ucf101/ucf101_x.pkl'
-save_video_embedding = '/home/yinghua/pycharm/VRank/data/pkl_data/ucf101/ucf101_x_embedding_new.pkl'
+save_video_embedding = '/home/yinghua/pycharm/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
 save_dir = './data/pkl_data/ucf101/pic/'
 device = torch.device('cuda:1' if torch.cuda.is_available() else "cpu")
+
 
 def main():
     x = pickle.load(open(path_x, 'rb'))

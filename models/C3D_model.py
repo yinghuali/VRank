@@ -1,7 +1,6 @@
-#coding:utf8
 import torch
 import torch.nn as nn
-from mypath import Path
+
 
 ## C3D模型定义
 class C3D(nn.Module):
