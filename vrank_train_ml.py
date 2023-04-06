@@ -1,5 +1,4 @@
 from utils import *
-from vrank import ConvLstm
 import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
