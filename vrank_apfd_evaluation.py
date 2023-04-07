@@ -1,5 +1,6 @@
 from utils import *
 import pickle
+import argparse
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
@@ -10,12 +11,37 @@ from get_rank_idx import *
 from scipy.stats import entropy
 import pandas as pd
 
+ap = argparse.ArgumentParser()
+ap.add_argument("--path_x", type=str, default='')
+ap.add_argument("--path_y", type=str, default='')
+ap.add_argument("--path_val_pre", type=str, default='')
+ap.add_argument("--path_test_pre", type=str, default='')
+ap.add_argument("--path_x_embedding", type=str, default='')
+ap.add_argument("--save_name", type=str, default='')
 
-path_x = './data/pkl_data/ucf101/ucf101_x.pkl'
-path_y = './data/pkl_data/ucf101/ucf101_y.pkl'
-path_val_pre = './target_models/ucf101_R3D_30_val_pre.pkl'
-path_test_pre = './target_models/ucf101_R3D_30_test_pre.pkl'
-path_x_embedding = './data/pkl_data/ucf101/ucf101_x_embedding.pkl'
+args = vars(ap.parse_args())
+path_x = args['path_x']
+path_y = args['path_y']
+path_val_pre = args['path_val_pre']
+path_test_pre = args['path_test_pre']
+path_x_embedding = args['path_x_embedding']
+save_name = args['save_name']
+
+
+# python vrank_apfd_evaluation.py --save_name 'original' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --path_val_pre './target_models/ucf101_C3D_18_val_pre.pkl' --path_test_pre './target_models/ucf101_C3D_18_test_pre.pkl' --path_x_embedding '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
+
+
+# path_x = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl'
+# path_y = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl'
+# path_val_pre = './target_models/ucf101_C3D_18_val_pre.pkl'
+# path_test_pre = './target_models/ucf101_C3D_18_test_pre.pkl'
+# path_x_embedding = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
+
+# path_x = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/augmentation_width_shift_x.pkl'
+# path_y = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl'
+# path_val_pre = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_val_augmentation_width_shift_x_pre.pkl'
+# path_test_pre = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_test_augmentation_width_shift_x_pre.pkl'
+# path_x_embedding = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/augmentation_width_shift_x_embedding.pkl'
 
 
 def get_uncertainty_feature(x):
@@ -110,7 +136,7 @@ def main():
     entropy_apfd = apfd(idx_miss_list, entropy_rank_idx)
 
     df_apfd = pd.DataFrame(columns=['name'])
-    df_apfd['name'] = ['clean_data']
+    df_apfd['name'] = [save_name]
     df_apfd['xgb_apfd'] = [xgb_apfd]
     df_apfd['lgb_apfd'] = [lgb_apfd]
     df_apfd['rf_apfd'] = [rf_apfd]
@@ -123,7 +149,7 @@ def main():
     df_apfd['entropy_apfd'] = [entropy_apfd]
     df_apfd['random_apfd'] = [random_apfd]
     print(df_apfd)
-    # df_apfd.to_csv('res/repeat_apfd.csv', mode='a', header=False, index=False)
+    df_apfd.to_csv('results/apfd.csv', mode='a', header=False, index=False)
     print('finished')
 
 

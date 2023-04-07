@@ -28,12 +28,17 @@ from get_noise_data import *
 #     print(tmp_img[0])
 
 img = mpimg.imread('/Users/yinghua.li/Documents/Pycharm/VRank/data/bird.jpeg')
-print(img.shape)
-plt.imshow(img)
-plt.show()
+print(img.dtype)
+# print(img.shape)
+# plt.imshow(img)
+# plt.show()
 
+res = []
 for i in range(5):
     tmp_img = augmentation_width_shift(img)
-    plt.imshow(tmp_img)
-    plt.show()
-    print(tmp_img[0])
+    res.append(tmp_img)
+res = np.array(res)
+
+print(res.dtype)
+
+
