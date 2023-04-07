@@ -4,7 +4,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from torch import nn
 
-# python video_model_evaluation.py --cuda 'cuda:1' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl'  --model_path './target_models/ucf101_C3D_12.pt' --save_val_vec './target_models/ucf101_C3D_12_val_pre.pkl' --save_test_vec './target_models/ucf101_C3D_12_test_pre.pkl'
+# python get_video_model_pre.py --cuda 'cuda:1' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf_noise/augmentation_width_shift_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl'  --model_path './target_models/ucf101_C3D_18.pt' --save_val_vec '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_val_augmentation_width_shift_x_pre.pkl' --save_test_vec '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_test_augmentation_width_shift_x_pre.pkl'
 
 import argparse
 ap = argparse.ArgumentParser()
@@ -108,3 +108,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+

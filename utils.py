@@ -47,24 +47,6 @@ def get_res_ratio_list(idx_miss_list, select_idx_list, select_ratio_list):
     return res_ratio_list
 
 
-def load_data(path_x_np, path_edge_index, path_y):
-    x = pickle.load(open(path_x_np, 'rb'))
-    edge_index = pickle.load(open(path_edge_index, 'rb'))
-    y = pickle.load(open(path_y, 'rb'))
-
-    num_node_features = len(x[0])
-    num_classes = len(set(y))
-    idx_np = np.array(list(range(len(x))))
-    train_idx, test_idx, train_y, test_y = train_test_split(idx_np, y, test_size=0.3, random_state=17)
-
-    x = torch.from_numpy(x)
-    edge_index = torch.from_numpy(edge_index)
-    y = torch.from_numpy(y)
-
-    return num_node_features, num_classes, x, edge_index, y, test_y, train_idx, test_idx
-
-
-
 def apfd(error_idx_list, pri_idx_list):
     error_idx_list = list(error_idx_list)
     pri_idx_list = list(pri_idx_list)

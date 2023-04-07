@@ -230,7 +230,7 @@ def run_video(video_path, select_method, save_path_pkl):
             tmp_img = method(img)
             img_list.append(tmp_img)
         new_video_list.append(img_list)
-    new_video_np = np.array(new_video_list)
+    new_video_np = np.array(new_video_list, dtype='uint8')
     pickle.dump(new_video_np, open(save_path_pkl, 'wb'), protocol=4)
 
 
