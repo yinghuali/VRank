@@ -17,7 +17,8 @@ ap.add_argument("--path_y", type=str, default='')
 ap.add_argument("--path_val_pre", type=str, default='')
 ap.add_argument("--path_test_pre", type=str, default='')
 ap.add_argument("--path_x_embedding", type=str, default='')
-ap.add_argument("--save_name", type=str, default='')
+ap.add_argument("--save_col_name", type=str, default='')
+ap.add_argument("--save_path_name", type=str, default='')
 
 args = vars(ap.parse_args())
 path_x = args['path_x']
@@ -25,10 +26,11 @@ path_y = args['path_y']
 path_val_pre = args['path_val_pre']
 path_test_pre = args['path_test_pre']
 path_x_embedding = args['path_x_embedding']
-save_name = args['save_name']
+save_col_name = args['save_col_name']
+save_path_name = args['save_path_name']
 
 
-# python vrank_apfd_evaluation.py --save_name 'original' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --path_val_pre './target_models/ucf101_C3D_18_val_pre.pkl' --path_test_pre './target_models/ucf101_C3D_18_test_pre.pkl' --path_x_embedding '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
+# python vrank_apfd_evaluation.py --save_path_name 'apfd.csv' --save_col_name 'original' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --path_val_pre './target_models/ucf101_C3D_18_val_pre.pkl' --path_test_pre './target_models/ucf101_C3D_18_test_pre.pkl' --path_x_embedding '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
 
 
 # path_x = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl'
@@ -36,12 +38,14 @@ save_name = args['save_name']
 # path_val_pre = './target_models/ucf101_C3D_18_val_pre.pkl'
 # path_test_pre = './target_models/ucf101_C3D_18_test_pre.pkl'
 # path_x_embedding = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
+# save_path_name = 'apfd.csv'
 
 # path_x = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/augmentation_width_shift_x.pkl'
 # path_y = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl'
 # path_val_pre = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_val_augmentation_width_shift_x_pre.pkl'
 # path_test_pre = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_test_augmentation_width_shift_x_pre.pkl'
 # path_x_embedding = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/augmentation_width_shift_x_embedding.pkl'
+# save_path_name = 'apfd.csv'
 
 
 def get_uncertainty_feature(x):
@@ -149,7 +153,7 @@ def main():
     df_apfd['entropy_apfd'] = [entropy_apfd]
     df_apfd['random_apfd'] = [random_apfd]
     print(df_apfd)
-    df_apfd.to_csv('results/apfd.csv', mode='a', header=False, index=False)
+    df_apfd.to_csv('results/'+save_path_name, mode='a', header=False, index=False)
     print('finished')
 
 
