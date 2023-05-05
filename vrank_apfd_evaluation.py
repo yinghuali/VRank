@@ -140,7 +140,7 @@ def main():
     entropy_apfd = apfd(idx_miss_list, entropy_rank_idx)
 
     df_apfd = pd.DataFrame(columns=['name'])
-    df_apfd['name'] = [save_name]
+    df_apfd['name'] = [save_col_name]
     df_apfd['xgb_apfd'] = [xgb_apfd]
     df_apfd['lgb_apfd'] = [lgb_apfd]
     df_apfd['rf_apfd'] = [rf_apfd]
@@ -153,17 +153,12 @@ def main():
     df_apfd['entropy_apfd'] = [entropy_apfd]
     df_apfd['random_apfd'] = [random_apfd]
     print(df_apfd)
-    df_apfd.to_csv('results/'+save_col_name, mode='a', header=False, index=False)
+    df_apfd.to_csv('results/'+save_path_name, mode='a', header=False, index=False)
     print('finished')
 
 
 if __name__ == '__main__':
     main()
-
-
-
-
-
 
 
 

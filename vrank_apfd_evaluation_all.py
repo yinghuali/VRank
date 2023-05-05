@@ -11,54 +11,54 @@ from get_rank_idx import *
 from scipy.stats import entropy
 import pandas as pd
 
-save_path_name = 'apfd_accident_R3D_10.csv'
+save_path_name = 'apfd_accident_slowfastnet_40.csv'
 
 path_x_1 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_x.pkl'
 path_y_1 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
-path_val_pre_1 = './target_models/accident_R3D_10_val_pre.pkl'
-path_test_pre_1 = './target_models/accident_R3D_10_test_pre.pkl'
+path_val_pre_1 = './target_models/accident_slowfastnet_40_val_pre.pkl'
+path_test_pre_1 = './target_models/accident_slowfastnet_40_test_pre.pkl'
 path_x_embedding_1 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_x_embedding.pkl'
 
 path_x_2 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_channel_shift_range_x.pkl'
 path_y_2 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
-path_val_pre_2 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_val_augmentation_channel_shift_range_x_pre.pkl'
-path_test_pre_2 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_test_augmentation_channel_shift_range_x_pre.pkl'
+path_val_pre_2 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_channel_shift_range_x_pre.pkl'
+path_test_pre_2 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_channel_shift_range_x_pre.pkl'
 path_x_embedding_2 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_channel_shift_range_x_embedding.pkl'
 
 path_x_3 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_featurewise_std_normalization_x.pkl'
 path_y_3 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
-path_val_pre_3 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_val_augmentation_featurewise_std_normalization_x_pre.pkl'
-path_test_pre_3 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_test_augmentation_featurewise_std_normalization_x_pre.pkl'
+path_val_pre_3 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_featurewise_std_normalization_x_pre.pkl'
+path_test_pre_3 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_featurewise_std_normalization_x_pre.pkl'
 path_x_embedding_3 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_featurewise_std_normalization_x_embedding.pkl'
 
 path_x_4 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_height_shift_x.pkl'
 path_y_4 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
-path_val_pre_4 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_val_augmentation_height_shift_x_pre.pkl'
-path_test_pre_4 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_test_augmentation_height_shift_x_pre.pkl'
+path_val_pre_4 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_height_shift_x_pre.pkl'
+path_test_pre_4 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_height_shift_x_pre.pkl'
 path_x_embedding_4 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_height_shift_x_embedding.pkl'
 
 path_x_5 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_horizontal_flip_x.pkl'
 path_y_5 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
-path_val_pre_5 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_val_augmentation_horizontal_flip_x_pre.pkl'
-path_test_pre_5 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_test_augmentation_horizontal_flip_x_pre.pkl'
+path_val_pre_5 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_horizontal_flip_x_pre.pkl'
+path_test_pre_5 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_horizontal_flip_x_pre.pkl'
 path_x_embedding_5 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_horizontal_flip_x_embedding.pkl'
 
 path_x_6 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_shear_range_x.pkl'
 path_y_6 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
-path_val_pre_6 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_val_augmentation_shear_range_x_pre.pkl'
-path_test_pre_6 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_test_augmentation_shear_range_x_pre.pkl'
+path_val_pre_6 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_shear_range_x_pre.pkl'
+path_test_pre_6 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_shear_range_x_pre.pkl'
 path_x_embedding_6 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_shear_range_x_embedding.pkl'
 
 path_x_7 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_width_shift_x.pkl'
 path_y_7 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
-path_val_pre_7 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_val_augmentation_width_shift_x_pre.pkl'
-path_test_pre_7 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_test_augmentation_width_shift_x_pre.pkl'
+path_val_pre_7 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_width_shift_x_pre.pkl'
+path_test_pre_7 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_width_shift_x_pre.pkl'
 path_x_embedding_7 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_width_shift_x_embedding.pkl'
 
 path_x_8 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_zca_whitening_x.pkl'
 path_y_8 = '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
-path_val_pre_8 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_val_augmentation_zca_whitening_x_pre.pkl'
-path_test_pre_8 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_R3D_10_test_augmentation_zca_whitening_x_pre.pkl'
+path_val_pre_8 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_zca_whitening_x_pre.pkl'
+path_test_pre_8 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_zca_whitening_x_pre.pkl'
 path_x_embedding_8 = '/raid/yinghua/VRank/data/pkl_data/accident_noise/augmentation_zca_whitening_x_embedding.pkl'
 
 

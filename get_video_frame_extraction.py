@@ -12,10 +12,12 @@ ap.add_argument("--save_path_y", type=str)
 args = ap.parse_args()
 
 # python get_video_frame_extraction.py --data_name 'ucf101' --video_dir './data/UCF-101' --save_path_x './data/pkl_data/ucf101/ucf101_x.pkl' --save_path_y './data/pkl_data/ucf101/ucf101_y.pkl'
-
-# mac
 # python get_video_frame_extraction.py --data_name 'ucf101' --video_dir './data' --save_path_x './data/pkl_data/ucf101/ucf101_x.pkl' --save_path_y './data/pkl_data/ucf101/ucf101_y.pkl'
 
+# python get_video_frame_extraction.py --data_name 'hmdb51' --video_dir '/raid/yinghua/VRank/data/hmdb51' --save_path_x '/raid/yinghua/VRank/data/pkl_data/hmdb51/hmdb51_x.pkl' --save_path_y '/raid/yinghua/VRank/data/pkl_data/hmdb51/hmdb51_y.pkl'
+# python get_video_frame_extraction.py --data_name 'charades' --video_dir '/raid/yinghua/VRank/data/charades/Charades_v1_480' --save_path_x '/raid/yinghua/VRank/data/pkl_data/charades/charades_x.pkl' --save_path_y '/raid/yinghua/VRank/data/pkl_data/charades/charades_y.pkl'
+# python get_video_frame_extraction.py --data_name 'hollywood2' --video_dir '/raid/yinghua/VRank/data/hollywood2/Hollywood2/AVIClips' --save_path_x '/raid/yinghua/VRank/data/pkl_data/hollywood2/hollywood2_x.pkl' --save_path_y '/raid/yinghua/VRank/data/pkl_data/hollywood2/hollywood2_y.pkl'
+# python get_video_frame_extraction.py --data_name 'accident' --video_dir '/raid/yinghua/VRank/data/hwid12/Video-Accident-Dataset' --save_path_x '/raid/yinghua/VRank/data/pkl_data/accident/accident_x.pkl' --save_path_y '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
 
 def get_path(path_dir_compile):
     path_list = []
@@ -23,7 +25,7 @@ def get_path(path_dir_compile):
         for root, dirs, files in os.walk(path_dir_compile, topdown=True):
             for file in files:
                 file_absolute_path = os.path.join(root, file)
-                if file_absolute_path.endswith('.avi'):
+                if file_absolute_path.endswith('.mp4'):
                     path_list.append(file_absolute_path)
     return path_list
 
@@ -70,9 +72,25 @@ def get_all_pic_list(path_video_list, label_np):
 def main():
     if args.data_name == 'ucf101':
         dic = dic_ucf101
+    if args.data_name == 'hollywood2':
+        dic = dic_hollywood2
+    if args.data_name == 'hmdb51':
+        dic = dic_hmdb51
+    if args.data_name == 'accident':
+        dic = dic_accident
 
-    path_video_list = get_path(args.video_dir)
-    video_name_list = [i.split('/')[-2] for i in path_video_list]
+    path_video_list_ = get_path(args.video_dir)
+    video_name_list_ = [i.split('/')[-2] for i in path_video_list_] # hmdb51, Video-Accident-Dataset
+    # video_name_list_ = [i.split('/')[-1].split('.')[0] for i in path_video_list_] #hollywood2
+
+    path_video_list = []
+    video_name_list = []
+    for i in range(len(video_name_list_)):
+        if video_name_list_[i] in dic:
+            video_name_list.append(video_name_list_[i])
+            path_video_list.append(path_video_list_[i])
+    print(len(video_name_list))
+
     label_np = np.array([dic[i] for i in video_name_list])
 
     all_video_pic_np, all_label_np = get_all_pic_list(path_video_list, label_np)

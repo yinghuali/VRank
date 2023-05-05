@@ -4,7 +4,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from torch import nn
 
-# python get_video_model_pre.py --cuda 'cuda:1' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf_noise/augmentation_width_shift_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl'  --model_path './target_models/ucf101_C3D_18.pt' --save_val_vec '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_val_augmentation_width_shift_x_pre.pkl' --save_test_vec '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_test_augmentation_width_shift_x_pre.pkl'
+# python get_video_model_pre.py --cuda 'cuda:0' --path_x '/raid/yinghua/VRank/data/pkl_data/hmdb51/hmdb51_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/hmdb51/hmdb51_y.pkl'  --model_path './target_models/hmdb51_C3D_40.pt' --save_val_vec '/home/yinghua/pycharm/VRank/target_models/hmdb51_C3D_40_val_pre.pkl' --save_test_vec '/home/yinghua/pycharm/VRank/target_models/hmdb51_C3D_40_test_pre.pkl'
+# python get_video_model_pre.py --cuda 'cuda:3' --path_x '/raid/yinghua/VRank/data/pkl_data/accident/accident_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'  --model_path './target_models/accident_C3D_10.pt' --save_val_vec '/home/yinghua/pycharm/VRank/target_models/accident_C3D_10_val_pre.pkl' --save_test_vec '/home/yinghua/pycharm/VRank/target_models/accident_C3D_10_test_pre.pkl'
 
 import argparse
 ap = argparse.ArgumentParser()

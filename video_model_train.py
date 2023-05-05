@@ -10,6 +10,7 @@ import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from torch.autograd import Variable
+from models.slowfastnet import resnet50
 
 
 import argparse
@@ -24,9 +25,8 @@ ap.add_argument("--batch_size", type=int)
 ap.add_argument("--save_model_path", type=str)
 args = ap.parse_args()
 
-# python video_model_train.py --cuda 'cuda:1' --model_name 'R3D' --epochs 61 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 8 --save_model_path './target_models/ucf101_R3D'
-# nohup python video_model_train.py --cuda 'cuda:1' --model_name 'C3D' --epochs 101 --data_name 'ucf101' --path_x './data/pkl_data/ucf101/ucf101_x.pkl' --path_y './data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 24 --save_model_path './target_models/ucf101_C3D' > train_C3D.log 2>&1 &
-
+# nohup python video_model_train.py --cuda 'cuda:2' --model_name 'R2Plus1D' --epochs 51 --data_name 'ucf101' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 24 --save_model_path './target_models/ucf101_R2Plus1D' > train_R2Plus1D.log 2>&1 &
+# nohup python video_model_train.py --cuda 'cuda:2' --model_name 'slowfastnet' --epochs 51 --data_name 'ucf101' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 24 --save_model_path './target_models/ucf101_slowfastnet' > train_slowfastnet.log 2>&1 &
 lr = 0.001
 
 
@@ -51,16 +51,32 @@ def train_model():
     dataset = Data.TensorDataset(x_train_t, y_train_t)
     dataloader = Data.DataLoader(dataset=dataset, batch_size=args.batch_size, shuffle=True)
 
-    if args.data_name == 'hmdb51':
-        num_classes = 51
     if args.data_name == 'ucf101':
         num_classes = 101
+
+    if args.data_name == 'charades':
+        num_classes = 16
+
+    if args.data_name == 'hmdb51':
+        num_classes = 51
+
+    if args.data_name == 'hollywood2':
+        num_classes = 12
+
+    if args.data_name == 'accident':
+        num_classes = 12
 
     if args.model_name == 'R3D':
         model = R3DClassifier(num_classes, (2, 2, 2, 2))
         train_params = model.parameters()
     if args.model_name == 'C3D':
         model = C3D_model.C3D(num_classes=num_classes, pretrained=False)
+        train_params = model.parameters()
+    if args.model_name == 'R2Plus1D':
+        model = R2Plus1D_model.R2Plus1DClassifier(num_classes=num_classes, layer_sizes=(2, 2, 2, 2))
+        train_params = model.parameters()
+    if args.model_name == 'slowfastnet':
+        model = resnet50(class_num=num_classes)
         train_params = model.parameters()
 
     model.to(device)
@@ -96,9 +112,11 @@ def train_model():
         epoch_acc = running_corrects.double() / len(train_x)
         print('epoch_acc =', epoch_acc)
 
-        if e % 3 == 0 and e > 0:
+        if e % 5 == 0 and e > 0:
             torch.save(model, args.save_model_path+'_'+str(e)+'.pt')
 
 
 if __name__ == '__main__':
     train_model()
+
+

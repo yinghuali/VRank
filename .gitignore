@@ -128,8 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-
-
 .idea
 .DS_Store
 data/*
@@ -137,3 +135,4 @@ data/*
 README.txt
 readme.txt
 target_models/*
+results/*
