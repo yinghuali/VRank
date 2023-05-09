@@ -72,8 +72,6 @@ def get_all_pic_list(path_video_list, label_np):
 def main():
     if args.data_name == 'ucf101':
         dic = dic_ucf101
-    if args.data_name == 'hollywood2':
-        dic = dic_hollywood2
     if args.data_name == 'hmdb51':
         dic = dic_hmdb51
     if args.data_name == 'accident':
