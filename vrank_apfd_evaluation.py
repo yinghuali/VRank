@@ -33,21 +33,6 @@ save_path_name = args['save_path_name']
 # python vrank_apfd_evaluation.py --save_path_name 'apfd.csv' --save_col_name 'original' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --path_val_pre './target_models/ucf101_C3D_18_val_pre.pkl' --path_test_pre './target_models/ucf101_C3D_18_test_pre.pkl' --path_x_embedding '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
 
 
-# path_x = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl'
-# path_y = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl'
-# path_val_pre = './target_models/ucf101_C3D_18_val_pre.pkl'
-# path_test_pre = './target_models/ucf101_C3D_18_test_pre.pkl'
-# path_x_embedding = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
-# save_path_name = 'apfd.csv'
-
-# path_x = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/augmentation_width_shift_x.pkl'
-# path_y = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl'
-# path_val_pre = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_val_augmentation_width_shift_x_pre.pkl'
-# path_test_pre = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/ucf101_C3D_18_test_augmentation_width_shift_x_pre.pkl'
-# path_x_embedding = '/raid/yinghua/VRank/data/pkl_data/ucf_noise/augmentation_width_shift_x_embedding.pkl'
-# save_path_name = 'apfd.csv'
-
-
 def get_uncertainty_feature(x):
     margin_score = np.sort(x)[:, -1] - np.sort(x)[:, -2]
     gini_score = 1 - np.sum(np.power(x, 2), axis=1)
@@ -56,7 +41,7 @@ def get_uncertainty_feature(x):
     PCS_score = 1 - (np.sort(x)[:, -1] - np.sort(x)[:, -2])
     entropy_score = entropy(np.array([i / np.sum(i) for i in x]), axis=1)
 
-    feature_vec = np.vstack((margin_score,gini_score, least_score, VanillaSoftmax_score, PCS_score, entropy_score))
+    feature_vec = np.vstack((margin_score, gini_score, least_score, VanillaSoftmax_score, PCS_score, entropy_score))
     return feature_vec.T
 
 
@@ -132,8 +117,6 @@ def main():
     lr_apfd = apfd(idx_miss_list, lr_rank_idx)
 
     deepGini_apfd = apfd(idx_miss_list, deepGini_rank_idx)
-    leastConfidence_apfd = apfd(idx_miss_list, leastConfidence_rank_idx)
-    margin_apfd = apfd(idx_miss_list, margin_rank_idx)
     random_apfd = apfd(idx_miss_list, random_rank_idx)
     vanillasoftmax_apfd = apfd(idx_miss_list, vanillasoftmax_rank_idx)
     pcs_apfd = apfd(idx_miss_list, pcs_rank_idx)
@@ -146,15 +129,14 @@ def main():
     df_apfd['rf_apfd'] = [rf_apfd]
     df_apfd['lr_apfd'] = [lr_apfd]
     df_apfd['deepGini_apfd'] = [deepGini_apfd]
-    df_apfd['leastConfidence_apfd'] = [leastConfidence_apfd]
-    df_apfd['margin_apfd'] = [margin_apfd]
     df_apfd['vanillasoftmax_apfd'] = [vanillasoftmax_apfd]
     df_apfd['pcs_apfd'] = [pcs_apfd]
     df_apfd['entropy_apfd'] = [entropy_apfd]
     df_apfd['random_apfd'] = [random_apfd]
     print(df_apfd)
-    df_apfd.to_csv('results/'+save_path_name, mode='a', header=False, index=False)
+    # df_apfd.to_csv('results/'+save_path_name, mode='a', header=False, index=False)
     print('finished')
+    print(df_apfd.to_numpy())
 
 
 if __name__ == '__main__':
