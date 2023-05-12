@@ -135,4 +135,5 @@ data/*
 README.txt
 readme.txt
 target_models/*
-results/*
+.ipynb_checkpoints/*
+tables/*
