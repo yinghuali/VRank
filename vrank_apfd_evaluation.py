@@ -134,7 +134,7 @@ def main():
     df_apfd['entropy_apfd'] = [entropy_apfd]
     df_apfd['random_apfd'] = [random_apfd]
     print(df_apfd)
-    # df_apfd.to_csv('results/'+save_path_name, mode='a', header=False, index=False)
+    df_apfd.to_csv('results/'+save_path_name, mode='a', header=False, index=False)
     print('finished')
     print(df_apfd.to_numpy())
 

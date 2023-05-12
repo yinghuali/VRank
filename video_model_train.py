@@ -54,14 +54,8 @@ def train_model():
     if args.data_name == 'ucf101':
         num_classes = 101
 
-    if args.data_name == 'charades':
-        num_classes = 16
-
     if args.data_name == 'hmdb51':
         num_classes = 51
-
-    if args.data_name == 'hollywood2':
-        num_classes = 12
 
     if args.data_name == 'accident':
         num_classes = 12
