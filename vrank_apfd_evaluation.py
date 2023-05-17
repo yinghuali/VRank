@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
 from lightgbm import LGBMClassifier
-from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 from get_rank_idx import *
 from scipy.stats import entropy
@@ -101,11 +100,8 @@ def main():
     model.fit(concat_train_all_feature, train_rank_label)
     y_concat_all = model.predict_proba(concat_test_all_feature)[:, 1]
     lr_rank_idx = y_concat_all.argsort()[::-1].copy()
-    
-    margin_rank_idx = Margin_rank_idx(test_pre_vec)
-    deepGini_rank_idx = DeepGini_rank_idx(test_pre_vec)
-    leastConfidence_rank_idx = LeastConfidence_rank_idx(test_pre_vec)
 
+    deepGini_rank_idx = DeepGini_rank_idx(test_pre_vec)
     vanillasoftmax_rank_idx = VanillaSoftmax_rank_idx(test_pre_vec)
     pcs_rank_idx = PCS_rank_idx(test_pre_vec)
     entropy_rank_idx = Entropy_rank_idx(test_pre_vec)
