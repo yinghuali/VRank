@@ -10,8 +10,8 @@ from get_rank_idx import *
 
 path_x = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl'
 path_y = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl'
-path_val_pre = './target_models/ucf101_C3D_18_val_pre.pkl'
-path_test_pre = './target_models/ucf101_C3D_18_test_pre.pkl'
+path_val_pre = './target_models/ucf101_slowfastnet_24_val_pre.pkl'
+path_test_pre = './target_models/ucf101_slowfastnet_24_test_pre.pkl'
 path_x_embedding = '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x_embedding.pkl'
 
 
@@ -43,7 +43,7 @@ def get_compress_feature(video):
 
 def main():
     x = pickle.load(open(path_x, 'rb'))  # (13038, 16, 112, 112, 3)
-    x_embedding = pickle.load(open(path_x_embedding, 'rb')) # (13038, 2048)
+    x_embedding = pickle.load(open(path_x_embedding, 'rb'))  # (13038, 2048)
     y = pickle.load(open(path_y, 'rb'))
 
     shape = x.shape
@@ -53,6 +53,7 @@ def main():
         feature = get_compress_feature(video)
         compress_feature.append(feature)
     compress_feature = np.array(compress_feature)
+    print(compress_feature.shape)
 
     train_x_, test_x, train_y_, test_y = train_test_split(x, y, test_size=0.3, random_state=17)
     train_x, val_x, train_y, val_y = train_test_split(train_x_, train_y_, test_size=0.3, random_state=17)
@@ -75,10 +76,10 @@ def main():
     uncertainty_feature = np.vstack((uncertainty_feature_val, uncertainty_feature_test))
     embedding_feature = np.vstack((val_x_embedding, test_x_embedding))
 
-    train_pre_vec, test_pre_vec, train_y, test_y = train_test_split(pre_vec, y, test_size=0.2, random_state=17)
-    train_compress_feature, test_compress_feature, _, _ = train_test_split(compress_feature, y, test_size=0.2, random_state=17)
-    train_uncertainty_feature, test_uncertainty_feature, _, _ = train_test_split(uncertainty_feature, y, test_size=0.2, random_state=17)
-    train_embedding_feature, test_embedding_feature, _, _ = train_test_split(embedding_feature, y, test_size=0.2, random_state=17)
+    train_pre_vec, test_pre_vec, train_y, test_y = train_test_split(pre_vec, y, test_size=0.3, random_state=17)
+    train_compress_feature, test_compress_feature, _, _ = train_test_split(compress_feature, y, test_size=0.3, random_state=17)
+    train_uncertainty_feature, test_uncertainty_feature, _, _ = train_test_split(uncertainty_feature, y, test_size=0.3, random_state=17)
+    train_embedding_feature, test_embedding_feature, _, _ = train_test_split(embedding_feature, y, test_size=0.3, random_state=17)
 
     concat_train_all_feature = np.hstack((train_pre_vec, train_compress_feature, train_uncertainty_feature, train_embedding_feature))
     concat_test_all_feature = np.hstack((test_pre_vec, test_compress_feature, test_uncertainty_feature, test_embedding_feature))
@@ -86,19 +87,22 @@ def main():
     train_pre = train_pre_vec.argsort()[:, -1]
     test_pre = test_pre_vec.argsort()[:, -1]
 
+    print('train:', len(train_pre))
+    print('test:', len(test_pre))
+
     train_rank_label = get_rank_label(train_pre, train_y)
     idx_miss_list = get_idx_miss_class(test_pre, test_y)
 
-    model = LGBMClassifier(n_estimators=400, max_depth=12)
+    model = LGBMClassifier(n_estimators=300, max_depth=5)
     model.fit(concat_train_all_feature, train_rank_label)
     y_concat_all = model.predict_proba(concat_test_all_feature)[:, 1]
     lgb_rank_idx = y_concat_all.argsort()[::-1].copy()
 
-    deepGini_rank_idx = DeepGini_rank_idx(val_pre_vec)
-    vanillasoftmax_rank_idx = VanillaSoftmax_rank_idx(val_pre_vec)
-    pcs_rank_idx = PCS_rank_idx(val_pre_vec)
-    entropy_rank_idx = Entropy_rank_idx(val_pre_vec)
-    random_rank_idx = Random_rank_idx(val_pre_vec)
+    deepGini_rank_idx = DeepGini_rank_idx(test_pre_vec)
+    vanillasoftmax_rank_idx = VanillaSoftmax_rank_idx(test_pre_vec)
+    pcs_rank_idx = PCS_rank_idx(test_pre_vec)
+    entropy_rank_idx = Entropy_rank_idx(test_pre_vec)
+    random_rank_idx = Random_rank_idx(test_pre_vec)
 
     lgb_apfd = apfd(idx_miss_list, lgb_rank_idx)
     deepGini_apfd = apfd(idx_miss_list, deepGini_rank_idx)
