@@ -1,12 +1,11 @@
 import torch
 import pickle
 import numpy as np
+import torch.utils.data as Data
 from sklearn.model_selection import train_test_split
 from models.R3D_model import R3DClassifier
 from models import C3D_model, R2Plus1D_model, R3D_model
-import torch.utils.data as Data
 from tqdm import tqdm
-import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
 from torch.autograd import Variable

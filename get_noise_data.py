@@ -3,14 +3,12 @@ import pickle
 import cv2
 import random
 import math
+import numpy as np
+import os
 from numpy import expand_dims
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
-from PIL import ImageEnhance
-import os
-os.environ["CUDA_VISIBLE_DEVICES"]="-1"
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--video_np_path", type=str, default='')

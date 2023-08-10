@@ -2,7 +2,6 @@ import torch
 import torchvision.models as models
 import torchvision.transforms as transforms
 import pickle
-from PIL import Image
 import numpy as np
 import argparse
 
@@ -21,7 +20,6 @@ args = vars(ap.parse_args())
 path_x = args['path_x']
 save_video_embedding = args['save_video_embedding']
 cuda = args['cuda']
-
 
 device = torch.device(cuda if torch.cuda.is_available() else "cpu")
 
