@@ -26,7 +26,6 @@ save_path_pkl = args['save_path_pkl']
 # image 0-255
 # (480, 714, 3)
 
-
 def augmentation_width_shift(img):
     samples = expand_dims(img, 0)
     datagen = ImageDataGenerator(width_shift_range=0.2)
