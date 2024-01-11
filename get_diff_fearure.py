@@ -1,11 +1,5 @@
-import torch
-import torchvision.models as models
-import torchvision.transforms as transforms
 import pickle
 import numpy as np
-import argparse
-
-path_x = './pkl_data/accident/accident_x.pkl'
 
 
 def get_euclidean_frame(x):
@@ -78,8 +72,9 @@ def get_frame_diff(x):
 
 
 # if __name__ == '__main__':
+#     path_x = './pkl_data/accident/accident_x.pkl'
 #     x = pickle.load(open(path_x, 'rb'))
 #     print(x.shape)
 #     frame_diff = get_frame_diff(x)
 #     print(frame_diff.shape)
-#
+
