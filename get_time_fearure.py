@@ -99,10 +99,10 @@ def get_all_time_feaure(x):
     return frame_diff
 
 
-if __name__ == '__main__':
-    path_x = './pkl_data/accident/accident_x.pkl'
-    x = pickle.load(open(path_x, 'rb'))
-    print(x.shape)
-    frame_diff = get_all_time_feaure(x)
-    print(frame_diff.shape)
+# if __name__ == '__main__':
+#     path_x = './pkl_data/accident/accident_x.pkl'
+#     x = pickle.load(open(path_x, 'rb'))
+#     print(x.shape)
+#     frame_diff = get_all_time_feaure(x)
+#     print(frame_diff.shape)
 
