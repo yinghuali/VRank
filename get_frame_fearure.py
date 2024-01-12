@@ -88,7 +88,7 @@ def get_statistic_frame(x):
     return all_feature
 
 
-def get_all_time_feaure(x):
+def get_all_frame_feaure(x):
     feature_euclidean = get_euclidean_frame(x)
     feature_manhattan = get_manhattan_frame(x)
     feature_squared = get_squared_frame(x)
@@ -98,11 +98,4 @@ def get_all_time_feaure(x):
     frame_diff = np.hstack((feature_euclidean, feature_manhattan, feature_squared, feature_pearson, feature_average, featur_statistic))
     return frame_diff
 
-
-# if __name__ == '__main__':
-#     path_x = './pkl_data/accident/accident_x.pkl'
-#     x = pickle.load(open(path_x, 'rb'))
-#     print(x.shape)
-#     frame_diff = get_all_time_feaure(x)
-#     print(frame_diff.shape)
 

@@ -1,6 +1,7 @@
-from utils import *
 import pickle
 import argparse
+import pandas as pd
+from utils import *
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from xgboost import XGBClassifier
@@ -8,7 +9,8 @@ from lightgbm import LGBMClassifier
 from sklearn.ensemble import RandomForestClassifier
 from get_rank_idx import *
 from scipy.stats import entropy
-import pandas as pd
+from get_frame_fearure import get_all_frame_feaure
+
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--path_x", type=str, default='')
@@ -48,6 +50,9 @@ def main():
     x = pickle.load(open(path_x, 'rb'))
     x_embedding = pickle.load(open(path_x_embedding, 'rb'))
     y = pickle.load(open(path_y, 'rb'))
+
+    frame_feature = get_all_frame_feaure(x)
+
     val_pre_vec = pickle.load(open(path_val_pre, 'rb'))
     test_pre_vec = pickle.load(open(path_test_pre, 'rb'))
 
@@ -60,14 +65,19 @@ def main():
     train_x_embedding_, test_x_embedding, _, _ = train_test_split(x_embedding, y, test_size=0.3, random_state=17)
     train_x_embedding, val_x_embedding, _, _ = train_test_split(train_x_embedding_, train_y_, test_size=0.3, random_state=17)
 
+    train_frame_feature_, test_frame_feature, _, _ = train_test_split(frame_feature, y, test_size=0.3, random_state=17)
+    train_frame_feature, val_frame_feature, _, _ = train_test_split(train_frame_feature_, train_y_, test_size=0.3, random_state=17)
+
     all_pre_vec = np.vstack((uncertainty_feature_val, uncertainty_feature_test))
     all_uncertainty_feature = np.vstack((val_pre_vec, test_pre_vec))
     all_embedding = np.vstack((val_x_embedding, test_x_embedding))
+    all_frame_feature = np.vstack((val_frame_feature, test_frame_feature))
     all_y = np.hstack((val_y, test_y))
 
     uncertainty_feature_train, uncertainty_feature_test, train_y, test_y = train_test_split(all_pre_vec, all_y, test_size=0.3, random_state=17)
     train_pre_vec, test_pre_vec, _, _ = train_test_split(all_uncertainty_feature, all_y, test_size=0.3, random_state=17)
     train_x_embedding, test_x_embedding, _, _ = train_test_split(all_embedding, all_y, test_size=0.3, random_state=17)
+    train_frame_feature, test_frame_feature, _, _ = train_test_split(all_frame_feature, all_y, test_size=0.3, random_state=17)
 
     train_pre = train_pre_vec.argsort()[:, -1]
     test_pre = test_pre_vec.argsort()[:, -1]
@@ -78,8 +88,8 @@ def main():
     train_rank_label = get_rank_label(train_pre, train_y)
     idx_miss_list = get_idx_miss_class(test_pre, test_y)
 
-    concat_train_all_feature = np.hstack((uncertainty_feature_train, train_pre_vec, train_x_embedding))
-    concat_test_all_feature = np.hstack((uncertainty_feature_test, test_pre_vec, test_x_embedding))
+    concat_train_all_feature = np.hstack((uncertainty_feature_train, train_pre_vec, train_x_embedding, train_frame_feature))
+    concat_test_all_feature = np.hstack((uncertainty_feature_test, test_pre_vec, test_x_embedding, test_frame_feature))
 
     model = XGBClassifier()
     model.fit(concat_train_all_feature, train_rank_label)
