@@ -144,6 +144,7 @@ pfd.py
 start_pfd.sh
 pfd.sh
 test.py
-
+results/*
+old_results/*
 
 
