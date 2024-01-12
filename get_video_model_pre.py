@@ -19,7 +19,7 @@ args = ap.parse_args()
 
 
 def main():
-    model = torch.load(args.model_path)
+    model = torch.load(args.model_path, map_location='cuda:0')
     device = torch.device(args.cuda if torch.cuda.is_available() else "cpu")
     model.to(device)
 
