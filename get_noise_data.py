@@ -28,7 +28,7 @@ save_path_pkl = args['save_path_pkl']
 
 def augmentation_width_shift(img):
     samples = expand_dims(img, 0)
-    datagen = ImageDataGenerator(width_shift_range=0.2)
+    datagen = ImageDataGenerator(width_shift_range=0.4)
     it = datagen.flow(samples, batch_size=1, seed=10)
     batch = it.next()
     image = batch[0].astype('int')
@@ -37,7 +37,7 @@ def augmentation_width_shift(img):
 
 def augmentation_height_shift(img):
     samples = expand_dims(img, 0)
-    datagen = ImageDataGenerator(height_shift_range=0.2)
+    datagen = ImageDataGenerator(height_shift_range=0.4)
     it = datagen.flow(samples, batch_size=1, seed=10)
     batch = it.next()
     image = batch[0].astype('int')
@@ -92,7 +92,7 @@ def augmentation_zoom(img):
 def augmentation_featurewise_std_normalization(img):
     samples = expand_dims(img, 0)
     datagen = ImageDataGenerator(featurewise_std_normalization=True)
-    it = datagen.flow(samples, batch_size=1, seed=11)
+    it = datagen.flow(samples, batch_size=1, seed=10)
     batch = it.next()
     image = batch[0].astype('int')
     return image
@@ -101,7 +101,7 @@ def augmentation_featurewise_std_normalization(img):
 def augmentation_zca_whitening(img):
     samples = expand_dims(img, 0)
     datagen = ImageDataGenerator(zca_whitening=True)
-    it = datagen.flow(samples, batch_size=1, seed=12)
+    it = datagen.flow(samples, batch_size=1, seed=2)
     batch = it.next()
     image = batch[0].astype('int')
     return image
@@ -109,7 +109,7 @@ def augmentation_zca_whitening(img):
 
 def augmentation_shear_range(img):
     samples = expand_dims(img, 0)
-    datagen = ImageDataGenerator(shear_range=0.5)
+    datagen = ImageDataGenerator(shear_range=0.9)
     it = datagen.flow(samples, batch_size=1, seed=9)
     batch = it.next()
     image = batch[0].astype('int')
@@ -118,7 +118,7 @@ def augmentation_shear_range(img):
 
 def augmentation_channel_shift_range(img):
     samples = expand_dims(img, 0)
-    datagen = ImageDataGenerator(channel_shift_range=80)
+    datagen = ImageDataGenerator(channel_shift_range=90)
     it = datagen.flow(samples, batch_size=1, seed=10)
     batch = it.next()
     image = batch[0].astype('int')

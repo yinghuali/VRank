@@ -96,7 +96,7 @@ def main():
     y_concat_all = model.predict_proba(concat_test_all_feature)[:, 1]
     xgb_rank_idx = y_concat_all.argsort()[::-1].copy()
 
-    model = LGBMClassifier()
+    model = LGBMClassifier(n_estimators=300)
     model.fit(concat_train_all_feature, train_rank_label)
     y_concat_all = model.predict_proba(concat_test_all_feature)[:, 1]
     lgb_rank_idx = y_concat_all.argsort()[::-1].copy()

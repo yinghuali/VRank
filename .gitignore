@@ -146,5 +146,6 @@ pfd.sh
 test.py
 results/*
 old_results/*
+*.sh
 
 
