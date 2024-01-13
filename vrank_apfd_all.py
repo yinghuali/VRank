@@ -1,5 +1,6 @@
 from utils import *
 import pickle
+import pandas as pd
 import argparse
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
@@ -9,11 +10,16 @@ from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier
 from get_rank_idx import *
 from scipy.stats import entropy
-import pandas as pd
 from get_frame_fearure import get_all_frame_feaure
 
-data_name = 'accident'
-model_name = 'slowfastnet_40'
+
+ap = argparse.ArgumentParser()
+ap.add_argument("--data_name", type=str, default='')
+ap.add_argument("--model_name", type=str, default='')
+args = vars(ap.parse_args())
+
+data_name = args['data_name']
+model_name = args['model_name']
 
 save_path_name = 'apfd_{}_{}.csv'.format(data_name, model_name)
 
