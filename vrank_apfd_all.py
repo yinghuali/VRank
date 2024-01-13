@@ -175,10 +175,10 @@ def main():
     train_rank_label_8, idx_miss_list_8, concat_train_all_feature_8, concat_test_all_feature_8, test_pre_vec_8 = \
         get_all_data(path_x_8, path_x_embedding_8, path_y_8, path_val_pre_8, path_test_pre_8)
     print('===8===')
-    #concat_test_all_feature = np.concatenate((concat_test_all_feature_1, concat_test_all_feature_2, concat_test_all_feature_3, concat_test_all_feature_4, concat_test_all_feature_5, concat_test_all_feature_6, concat_test_all_feature_7, concat_test_all_feature_8), axis=0)
+    concat_test_all_feature = np.concatenate((concat_test_all_feature_1, concat_test_all_feature_2, concat_test_all_feature_3, concat_test_all_feature_4, concat_test_all_feature_5, concat_test_all_feature_6, concat_test_all_feature_7, concat_test_all_feature_8), axis=0)
     concat_train_all_feature = np.concatenate((concat_train_all_feature_1, concat_train_all_feature_2, concat_train_all_feature_3, concat_train_all_feature_4, concat_train_all_feature_5, concat_train_all_feature_6, concat_train_all_feature_7, concat_train_all_feature_8), axis=0)
     train_rank_label = np.concatenate((train_rank_label_1, train_rank_label_2, train_rank_label_3, train_rank_label_4, train_rank_label_5, train_rank_label_6, train_rank_label_7, train_rank_label_8), axis=0)
-    #test_pre_vec = np.concatenate((test_pre_vec_1, test_pre_vec_2, test_pre_vec_3, test_pre_vec_4, test_pre_vec_5, test_pre_vec_6, test_pre_vec_7, test_pre_vec_8), axis=0)
+    test_pre_vec = np.concatenate((test_pre_vec_1, test_pre_vec_2, test_pre_vec_3, test_pre_vec_4, test_pre_vec_5, test_pre_vec_6, test_pre_vec_7, test_pre_vec_8), axis=0)
 
     def get_model_idx(model_name):
         if model_name=='xgb':
