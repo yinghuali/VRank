@@ -42,11 +42,11 @@ path_val_pre_3 = './pkl_data/{}_noise/{}_{}_val_augmentation_featurewise_std_nor
 path_test_pre_3 = './pkl_data/{}_noise/{}_{}_test_augmentation_featurewise_std_normalization_x_pre.pkl'.format(data_name, data_name, model_name)
 path_x_embedding_3 = './pkl_data/{}_noise/augmentation_featurewise_std_normalization_x_embedding.pkl'.format(data_name)
 
-path_x_4 = './pkl_data/accident_noise/augmentation_height_shift_x.pkl'
-path_y_4 = './pkl_data/accident/accident_y.pkl'
-path_val_pre_4 = './pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_height_shift_x_pre.pkl'
-path_test_pre_4 = './pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_height_shift_x_pre.pkl'
-path_x_embedding_4 = './pkl_data/accident_noise/augmentation_height_shift_x_embedding.pkl'
+path_x_4 = './pkl_data/{}_noise/augmentation_height_shift_x.pkl'.format(data_name)
+path_y_4 = './pkl_data/{}/{}_y.pkl'.format(data_name, data_name)
+path_val_pre_4 = './pkl_data/{}_noise/{}_{}_val_augmentation_height_shift_x_pre.pkl'.format(data_name, data_name, model_name)
+path_test_pre_4 = './pkl_data/{}_noise/{}_{}_test_augmentation_height_shift_x_pre.pkl'.format(data_name, data_name, model_name)
+path_x_embedding_4 = './pkl_data/{}_noise/augmentation_height_shift_x_embedding.pkl'.format(data_name)
 
 path_x_5 = './pkl_data/{}_noise/augmentation_horizontal_flip_x.pkl'.format(data_name)
 path_y_5 = './pkl_data/{}/{}_y.pkl'.format(data_name, data_name)
@@ -122,7 +122,6 @@ def get_all_data(path_x, path_x_embedding, path_y, path_val_pre, path_test_pre):
     return train_rank_label, idx_miss_list, concat_train_all_feature, concat_test_all_feature, test_pre_vec
 
 
-
 def get_uncertainty_feature(x):
     margin_score = np.sort(x)[:, -1] - np.sort(x)[:, -2]
     gini_score = 1 - np.sum(np.power(x, 2), axis=1)
@@ -160,10 +159,10 @@ def main():
     train_rank_label_8, idx_miss_list_8, concat_train_all_feature_8, concat_test_all_feature_8, test_pre_vec_8 = \
         get_all_data(path_x_8, path_x_embedding_8, path_y_8, path_val_pre_8, path_test_pre_8)
     print('===8===')
-    concat_test_all_feature = np.concatenate((concat_test_all_feature_1, concat_test_all_feature_2, concat_test_all_feature_3, concat_test_all_feature_4, concat_test_all_feature_5, concat_test_all_feature_6, concat_test_all_feature_7, concat_test_all_feature_8), axis=0)
+    #concat_test_all_feature = np.concatenate((concat_test_all_feature_1, concat_test_all_feature_2, concat_test_all_feature_3, concat_test_all_feature_4, concat_test_all_feature_5, concat_test_all_feature_6, concat_test_all_feature_7, concat_test_all_feature_8), axis=0)
     concat_train_all_feature = np.concatenate((concat_train_all_feature_1, concat_train_all_feature_2, concat_train_all_feature_3, concat_train_all_feature_4, concat_train_all_feature_5, concat_train_all_feature_6, concat_train_all_feature_7, concat_train_all_feature_8), axis=0)
     train_rank_label = np.concatenate((train_rank_label_1, train_rank_label_2, train_rank_label_3, train_rank_label_4, train_rank_label_5, train_rank_label_6, train_rank_label_7, train_rank_label_8), axis=0)
-    test_pre_vec = np.concatenate((test_pre_vec_1, test_pre_vec_2, test_pre_vec_3, test_pre_vec_4, test_pre_vec_5, test_pre_vec_6, test_pre_vec_7, test_pre_vec_8), axis=0)
+    #test_pre_vec = np.concatenate((test_pre_vec_1, test_pre_vec_2, test_pre_vec_3, test_pre_vec_4, test_pre_vec_5, test_pre_vec_6, test_pre_vec_7, test_pre_vec_8), axis=0)
 
     def get_model_idx(model_name):
         if model_name=='xgb':
