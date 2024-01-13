@@ -24,8 +24,9 @@ ap.add_argument("--batch_size", type=int)
 ap.add_argument("--save_model_path", type=str)
 args = ap.parse_args()
 
-# nohup python video_model_train.py --cuda 'cuda:2' --model_name 'R2Plus1D' --epochs 51 --data_name 'ucf101' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 24 --save_model_path './target_models/ucf101_R2Plus1D' > train_R2Plus1D.log 2>&1 &
-# nohup python video_model_train.py --cuda 'cuda:2' --model_name 'slowfastnet' --epochs 51 --data_name 'ucf101' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 24 --save_model_path './target_models/ucf101_slowfastnet' > train_slowfastnet.log 2>&1 &
+# nohup python video_model_train.py --cuda 'cuda:0' --model_name 'R2Plus1D' --epochs 51 --data_name 'ucf101' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 24 --save_model_path './target_models/ucf101_R2Plus1D' > train_R2Plus1D.log 2>&1 &
+# nohup python video_model_train.py --cuda 'cuda:0' --model_name 'slowfastnet' --epochs 51 --data_name 'ucf101' --path_x '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_x.pkl' --path_y '/raid/yinghua/VRank/data/pkl_data/ucf101/ucf101_y.pkl' --batch_size 24 --save_model_path './target_models/ucf101_slowfastnet' > train_slowfastnet.log 2>&1 &
+
 lr = 0.001
 
 
@@ -57,6 +58,9 @@ def train_model():
         num_classes = 51
 
     if args.data_name == 'accident':
+        num_classes = 12
+
+    if args.data_name == 'ccd':
         num_classes = 12
 
     if args.model_name == 'R3D':

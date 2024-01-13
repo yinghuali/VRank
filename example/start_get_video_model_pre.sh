@@ -1,3 +1,14 @@
+#!/bin/bash -l
+#SBATCH -N 1
+#SBATCH --mail-type=end,fail
+#SBATCH --mail-user=yinghua.li@uni.lu
+#SBATCH -n 2
+#SBATCH -p gpu
+#SBATCH --gres=gpu:2
+#SBATCH --time=1-23:00:00
+#SBATCH -C skylake
+#SBATCH --mem 700G
+
 python get_video_model_pre.py --cuda 'cuda:0' --path_x './pkl_data/ucf_noise/augmentation_channel_shift_range_x.pkl' --path_y './pkl_data/ucf101/ucf101_y.pkl'  --model_path './target_models/ucf101_C3D_18.pt' --save_val_vec './pkl_data/ucf_noise/ucf101_C3D_18_val_augmentation_channel_shift_range_x_pre.pkl' --save_test_vec './pkl_data/ucf_noise/ucf101_C3D_18_test_augmentation_channel_shift_range_x_pre.pkl'
 python get_video_model_pre.py --cuda 'cuda:0' --path_x './pkl_data/ucf_noise/augmentation_featurewise_std_normalization_x.pkl' --path_y './pkl_data/ucf101/ucf101_y.pkl'  --model_path './target_models/ucf101_C3D_18.pt' --save_val_vec './pkl_data/ucf_noise/ucf101_C3D_18_val_augmentation_featurewise_std_normalization_x_pre.pkl' --save_test_vec './pkl_data/ucf_noise/ucf101_C3D_18_test_augmentation_featurewise_std_normalization_x_pre.pkl'
 python get_video_model_pre.py --cuda 'cuda:0' --path_x './pkl_data/ucf_noise/augmentation_height_shift_x.pkl' --path_y './pkl_data/ucf101/ucf101_y.pkl'  --model_path './target_models/ucf101_C3D_18.pt' --save_val_vec './pkl_data/ucf_noise/ucf101_C3D_18_val_augmentation_height_shift_x_pre.pkl' --save_test_vec './pkl_data/ucf_noise/ucf101_C3D_18_test_augmentation_height_shift_x_pre.pkl'
@@ -105,4 +116,4 @@ python get_video_model_pre.py --cuda 'cuda:0' --path_x './pkl_data/accident_nois
 python get_video_model_pre.py --cuda 'cuda:0' --path_x './pkl_data/accident_noise/augmentation_width_shift_x.pkl' --path_y './pkl_data/accident/accident_y.pkl'  --model_path './target_models/accident_slowfastnet_40.pt' --save_val_vec './pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_width_shift_x_pre.pkl' --save_test_vec './pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_width_shift_x_pre.pkl'
 python get_video_model_pre.py --cuda 'cuda:0' --path_x './pkl_data/accident_noise/augmentation_zca_whitening_x.pkl' --path_y './pkl_data/accident/accident_y.pkl'  --model_path './target_models/accident_slowfastnet_40.pt' --save_val_vec './pkl_data/accident_noise/accident_slowfastnet_40_val_augmentation_zca_whitening_x_pre.pkl' --save_test_vec './pkl_data/accident_noise/accident_slowfastnet_40_test_augmentation_zca_whitening_x_pre.pkl'
 
-
+#############################################################
