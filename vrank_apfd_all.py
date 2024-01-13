@@ -119,6 +119,22 @@ def get_all_data(path_x, path_x_embedding, path_y, path_val_pre, path_test_pre):
     concat_train_all_feature = np.hstack((uncertainty_feature_train, train_pre_vec, train_x_embedding, train_frame_feature))
     concat_test_all_feature = np.hstack((uncertainty_feature_test, test_pre_vec, test_x_embedding, test_frame_feature))
 
+    nan_exists = np.isnan(concat_train_all_feature).any()
+    inf_exists = np.isinf(concat_train_all_feature).any()
+    if nan_exists:
+        concat_train_all_feature = np.nan_to_num(concat_train_all_feature, nan=0.0)
+    if inf_exists:
+        concat_train_all_feature[concat_train_all_feature == np.inf] = np.finfo(np.float32).max
+        concat_train_all_feature[concat_train_all_feature == -np.inf] = np.finfo(np.float32).min
+
+    nan_exists = np.isnan(concat_test_all_feature).any()
+    inf_exists = np.isinf(concat_test_all_feature).any()
+    if nan_exists:
+        concat_test_all_feature = np.nan_to_num(concat_test_all_feature, nan=0.0)
+    if inf_exists:
+        concat_test_all_feature[concat_test_all_feature == np.inf] = np.finfo(np.float32).max
+        concat_test_all_feature[concat_test_all_feature == -np.inf] = np.finfo(np.float32).min
+
     return train_rank_label, idx_miss_list, concat_train_all_feature, concat_test_all_feature, test_pre_vec
 
 
