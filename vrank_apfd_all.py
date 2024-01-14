@@ -135,6 +135,10 @@ def get_all_data(path_x, path_x_embedding, path_y, path_val_pre, path_test_pre):
         concat_test_all_feature[concat_test_all_feature == np.inf] = np.finfo(np.float32).max
         concat_test_all_feature[concat_test_all_feature == -np.inf] = np.finfo(np.float32).min
 
+    percentile_95 = np.percentile(concat_train_all_feature, 95, axis=0)
+    concat_train_all_feature = concat_train_all_feature / percentile_95
+    concat_test_all_feature = concat_test_all_feature / percentile_95
+
     return train_rank_label, idx_miss_list, concat_train_all_feature, concat_test_all_feature, test_pre_vec
 
 
@@ -180,25 +184,18 @@ def main():
     train_rank_label = np.concatenate((train_rank_label_1, train_rank_label_2, train_rank_label_3, train_rank_label_4, train_rank_label_5, train_rank_label_6, train_rank_label_7, train_rank_label_8), axis=0)
     test_pre_vec = np.concatenate((test_pre_vec_1, test_pre_vec_2, test_pre_vec_3, test_pre_vec_4, test_pre_vec_5, test_pre_vec_6, test_pre_vec_7, test_pre_vec_8), axis=0)
 
-    percentile_95 = np.percentile(concat_train_all_feature, 95, axis=0)
-    lr_concat_train_all_feature = concat_train_all_feature / percentile_95
-    lr_concat_test_all_feature = concat_test_all_feature / percentile_95
-
 
     def get_model_idx(model_name):
         if model_name=='xgb':
             model = XGBClassifier()
-            model.fit(concat_train_all_feature, train_rank_label)
         if model_name=='lgb':
             model = LGBMClassifier(n_estimators=300)
-            model.fit(concat_train_all_feature, train_rank_label)
         if model_name=='rf':
             model = RandomForestClassifier()
-            model.fit(concat_train_all_feature, train_rank_label)
         if model_name=='lr':
             model = LogisticRegression(solver='liblinear')
-            model.fit(lr_concat_train_all_feature, train_rank_label)
 
+        model.fit(concat_train_all_feature, train_rank_label)
         y_concat_all_1 = model.predict_proba(concat_test_all_feature_1)[:, 1]
         y_concat_all_2 = model.predict_proba(concat_test_all_feature_2)[:, 1]
         y_concat_all_3 = model.predict_proba(concat_test_all_feature_3)[:, 1]
@@ -217,8 +214,6 @@ def main():
         rank_idx_7 = y_concat_all_7.argsort()[::-1].copy()
         rank_idx_8 = y_concat_all_8.argsort()[::-1].copy()
         return rank_idx_1, rank_idx_2, rank_idx_3, rank_idx_4, rank_idx_5, rank_idx_6, rank_idx_7, rank_idx_8
-
-
 
     xgb_rank_idx_1, xgb_rank_idx_2, xgb_rank_idx_3, xgb_rank_idx_4, xgb_rank_idx_5, xgb_rank_idx_6, xgb_rank_idx_7, xgb_rank_idx_8 = get_model_idx('xgb')
     lgb_rank_idx_1, lgb_rank_idx_2, lgb_rank_idx_3, lgb_rank_idx_4, lgb_rank_idx_5, lgb_rank_idx_6, lgb_rank_idx_7, lgb_rank_idx_8 = get_model_idx('lgb')
