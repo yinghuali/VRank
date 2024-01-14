@@ -9,6 +9,6 @@
     OpenCV 4.7.0
 
 ## Data
+- UCF101: https://www.crcv.ucf.edu/data/UCF101.php  
 - HWID12: https://www.kaggle.com/datasets/landrykezebou/hwid12-highway-incidents-detection-dataset
 - HMDB51: https://serre-lab.clps.brown.edu/resource/hmdb-a-large-human-motion-database/#Downloads
-- UCF101: https://www.crcv.ucf.edu/data/UCF101.php
