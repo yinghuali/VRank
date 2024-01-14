@@ -135,9 +135,9 @@ def get_all_data(path_x, path_x_embedding, path_y, path_val_pre, path_test_pre):
         concat_test_all_feature[concat_test_all_feature == np.inf] = np.finfo(np.float32).max
         concat_test_all_feature[concat_test_all_feature == -np.inf] = np.finfo(np.float32).min
 
-    percentile_95 = np.percentile(concat_train_all_feature, 95, axis=0)
-    concat_train_all_feature = concat_train_all_feature / percentile_95
-    concat_test_all_feature = concat_test_all_feature / percentile_95
+    # percentile_95 = np.percentile(concat_train_all_feature, 95, axis=0)
+    # concat_train_all_feature = concat_train_all_feature / percentile_95
+    # concat_test_all_feature = concat_test_all_feature / percentile_95
 
     return train_rank_label, idx_miss_list, concat_train_all_feature, concat_test_all_feature, test_pre_vec
 

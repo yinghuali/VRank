@@ -91,9 +91,9 @@ def main():
     concat_train_all_feature = np.hstack((uncertainty_feature_train, train_pre_vec, train_x_embedding, train_frame_feature))
     concat_test_all_feature = np.hstack((uncertainty_feature_test, test_pre_vec, test_x_embedding, test_frame_feature))
 
-    percentile_95 = np.percentile(concat_train_all_feature, 95, axis=0)
-    concat_train_all_feature = concat_train_all_feature / percentile_95
-    concat_test_all_feature = concat_test_all_feature / percentile_95
+    # percentile_95 = np.percentile(concat_train_all_feature, 95, axis=0)
+    # concat_train_all_feature = concat_train_all_feature / percentile_95
+    # concat_test_all_feature = concat_test_all_feature / percentile_95
 
     model = XGBClassifier()
     model.fit(concat_train_all_feature, train_rank_label)
