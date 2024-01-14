@@ -5,22 +5,24 @@ from tensorflow.keras import layers
 from tensorflow.keras.applications.densenet import DenseNet121
 
 
-MAX_SEQ_LENGTH = 60
-NUM_FEATURES = 1024
-IMG_SIZE = 112
-
-
 class PositionalEmbedding(layers.Layer):
     def __init__(self, sequence_length, output_dim, **kwargs):
         super().__init__(**kwargs)
-        self.position_embeddings = layers.Embedding(
-            input_dim=sequence_length, output_dim=output_dim
-        )
+        self.position_embeddings = layers.Embedding(input_dim=sequence_length, output_dim=output_dim)
         self.sequence_length = sequence_length
         self.output_dim = output_dim
 
     def build(self, input_shape):
         self.position_embeddings.build(input_shape)
+
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            'sequence_length': self.sequence_length,
+            'output_dim': self.output_dim
+        })
+
+        return config
 
     def call(self, inputs):
         # The inputs are of shape: `(batch_size, frames, num_features)`
@@ -55,17 +57,27 @@ class TransformerEncoder(layers.Layer):
         proj_output = self.dense_proj(proj_input)
         return self.layernorm_2(proj_input + proj_output)
 
+    def get_config(self):
+        config = super().get_config()
+        config.update({
+            'embed_dim': self.embed_dim,
+            'dense_dim': self.dense_dim,
+            'num_heads': self.num_heads
+        })
+
+        return config
+
 
 def build_feature_extractor():
     feature_extractor = DenseNet121(
         weights="imagenet",
         include_top=False,
         pooling="avg",
-        input_shape=(IMG_SIZE, IMG_SIZE, 3),
+        input_shape=(112, 112, 3),
     )
     preprocess_input = tf.keras.applications.densenet.preprocess_input
 
-    inputs = tf.keras.Input((IMG_SIZE, IMG_SIZE, 3))
+    inputs = tf.keras.Input((112, 112, 3))
     preprocessed = preprocess_input(inputs)
 
     outputs = feature_extractor(preprocessed)
@@ -73,16 +85,14 @@ def build_feature_extractor():
 
 
 def get_vt_model(shape, num_classes):
-    sequence_length = MAX_SEQ_LENGTH
-    embed_dim = NUM_FEATURES
+    sequence_length = 60
+    embed_dim = 1024
     dense_dim = 4
     num_heads = 1
     classes = num_classes
 
     inputs = tf.keras.Input(shape=shape)
-    x = PositionalEmbedding(
-        sequence_length, embed_dim, name="frame_position_embedding"
-    )(inputs)
+    x = PositionalEmbedding(sequence_length, embed_dim, name="frame_position_embedding")(inputs)
     x = TransformerEncoder(embed_dim, dense_dim, num_heads, name="transformer_layer")(x)
     x = layers.GlobalMaxPooling1D()(x)
     x = layers.Dropout(0.5)(x)
