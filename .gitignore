@@ -147,5 +147,5 @@ test.py
 results/*
 old_results/*
 *.sh
-
+old1_results/*
 

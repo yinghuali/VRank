@@ -109,6 +109,10 @@ def get_all_data(path_x, path_x_embedding, path_y, path_val_pre, path_test_pre):
     concat_train_all_feature = np.hstack((uncertainty_feature_train, train_pre_vec, train_x_embedding, train_frame_feature))
     concat_test_all_feature = np.hstack((uncertainty_feature_test, test_pre_vec, test_x_embedding, test_frame_feature))
 
+    percentile_95 = np.percentile(concat_train_all_feature, 95, axis=0)
+    concat_train_all_feature = concat_train_all_feature / percentile_95
+    concat_test_all_feature = concat_test_all_feature / percentile_95
+
     return train_rank_label, idx_miss_list, concat_train_all_feature, concat_test_all_feature, test_pre_vec
 
 
