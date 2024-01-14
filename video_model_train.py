@@ -60,9 +60,6 @@ def train_model():
     if args.data_name == 'accident':
         num_classes = 12
 
-    if args.data_name == 'ccd':
-        num_classes = 12
-
     if args.model_name == 'R3D':
         model = R3DClassifier(num_classes, (2, 2, 2, 2))
         train_params = model.parameters()

@@ -1,11 +1,11 @@
-#source activate py37
+# source activate py37
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow.keras.applications.densenet import DenseNet121
 
 
-MAX_SEQ_LENGTH = 20
+MAX_SEQ_LENGTH = 60
 NUM_FEATURES = 1024
 IMG_SIZE = 112
 
@@ -72,7 +72,7 @@ def build_feature_extractor():
     return tf.keras.Model(inputs, outputs, name="feature_extractor")
 
 
-def get_compiled_model(shape, num_classes):
+def get_vt_model(shape, num_classes):
     sequence_length = MAX_SEQ_LENGTH
     embed_dim = NUM_FEATURES
     dense_dim = 4
