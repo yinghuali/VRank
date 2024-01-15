@@ -32,14 +32,6 @@ path_x_embedding = args['path_x_embedding']
 save_path = args['save_path']
 num_classes = args['num_classes']
 
-# path_model_save = './target_models/hmdb51_vt.h5'
-# path_frame = './pkl_data/hmdb51/hmdb51_x.pkl'
-# path_x = './pkl_data/hmdb51/vt_hmdb51_x.pkl'
-# path_y = './pkl_data/hmdb51/hmdb51_y.pkl'
-# path_x_embedding = './pkl_data/hmdb51/hmdb51_x_embedding.pkl'
-# save_path = './results/vt_hmdb51_x.json'
-# num_classes = 51
-
 
 model = load_model(path_model_save, custom_objects={'PositionalEmbedding': PositionalEmbedding, 'TransformerEncoder': TransformerEncoder})
 
