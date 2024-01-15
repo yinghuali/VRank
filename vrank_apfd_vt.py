@@ -1,16 +1,6 @@
 # source activate py37
 import json
-import pickle
-import argparse
-from utils import *
-from sklearn.model_selection import train_test_split
 import tensorflow as tf
-import pickle
-import os
-import numpy as np
-from sklearn.model_selection import train_test_split
-from tensorflow.keras.optimizers import SGD
-from models.video_transformer import get_vt_model, build_feature_extractor
 from tensorflow.keras.models import load_model
 from models.video_transformer import PositionalEmbedding, TransformerEncoder
 from sklearn.linear_model import LogisticRegression
@@ -22,13 +12,13 @@ from scipy.stats import entropy
 from get_frame_fearure import get_all_frame_feaure
 
 
-path_model_save = './target_models/accident_vt.h5'
-path_frame = './pkl_data/accident/accident_x.pkl'
-path_x = './pkl_data/accident/vt_accident_x.pkl'
-path_y = './pkl_data/accident/accident_y.pkl'
-path_x_embedding = './pkl_data/accident/accident_x_embedding.pkl'
-save_path = './results/vt_accident_x.json'
-num_classes = 12
+path_model_save = './target_models/hmdb51_vt.h5'
+path_frame = './pkl_data/hmdb51/hmdb51_x.pkl'
+path_x = './pkl_data/hmdb51/vt_hmdb51_x.pkl'
+path_y = './pkl_data/hmdb51/hmdb51_y.pkl'
+path_x_embedding = './pkl_data/hmdb51/hmdb51_x_embedding.pkl'
+save_path = './results/vt_hmdb51_x.json'
+num_classes = 51
 
 
 model = load_model(path_model_save, custom_objects={'PositionalEmbedding': PositionalEmbedding, 'TransformerEncoder': TransformerEncoder})
@@ -97,6 +87,23 @@ def main():
     concat_train_all_feature = np.hstack((uncertainty_feature_train, train_pre_vec, train_x_embedding, train_frame_feature))
     concat_test_all_feature = np.hstack((uncertainty_feature_test, test_pre_vec, test_x_embedding, test_frame_feature))
 
+
+    nan_exists = np.isnan(concat_train_all_feature).any()
+    inf_exists = np.isinf(concat_train_all_feature).any()
+    if nan_exists:
+        concat_train_all_feature = np.nan_to_num(concat_train_all_feature, nan=0.0)
+    if inf_exists:
+        concat_train_all_feature[concat_train_all_feature == np.inf] = np.finfo(np.float32).max
+        concat_train_all_feature[concat_train_all_feature == -np.inf] = np.finfo(np.float32).min
+
+    nan_exists = np.isnan(concat_test_all_feature).any()
+    inf_exists = np.isinf(concat_test_all_feature).any()
+    if nan_exists:
+        concat_test_all_feature = np.nan_to_num(concat_test_all_feature, nan=0.0)
+    if inf_exists:
+        concat_test_all_feature[concat_test_all_feature == np.inf] = np.finfo(np.float32).max
+        concat_test_all_feature[concat_test_all_feature == -np.inf] = np.finfo(np.float32).min
+
     percentile_95 = np.percentile(concat_train_all_feature, 95, axis=0)
     concat_train_all_feature = concat_train_all_feature / percentile_95
     concat_test_all_feature = concat_test_all_feature / percentile_95
@@ -126,18 +133,32 @@ def main():
     rf_apfd = apfd(idx_miss_list,  rf_rank_idx)
     lr_apfd = apfd(idx_miss_list, lr_rank_idx)
 
+    deepGini_rank_idx = DeepGini_rank_idx(test_pre_vec)
+    vanillasoftmax_rank_idx = VanillaSoftmax_rank_idx(test_pre_vec)
+    pcs_rank_idx = PCS_rank_idx(test_pre_vec)
+    entropy_rank_idx = Entropy_rank_idx(test_pre_vec)
+    random_rank_idx = Random_rank_idx(test_pre_vec)
+    deepGini_apfd = apfd(idx_miss_list, deepGini_rank_idx)
+    random_apfd = apfd(idx_miss_list, random_rank_idx)
+    vanillasoftmax_apfd = apfd(idx_miss_list, vanillasoftmax_rank_idx)
+    pcs_apfd = apfd(idx_miss_list, pcs_rank_idx)
+    entropy_apfd = apfd(idx_miss_list, entropy_rank_idx)
+
     dic = {'xgb_apfd': xgb_apfd,
            'lgb_apfd': lgb_apfd,
            'rf_apfd': rf_apfd,
-           'lr_apfd': lr_apfd
+           'lr_apfd': lr_apfd,
+           'deepGini_apfd': deepGini_apfd,
+           'vanillasoftmax_apfd': vanillasoftmax_apfd,
+           'pcs_apfd': pcs_apfd,
+           'entropy_apfd': entropy_apfd,
+           'random_apfd': random_apfd
            }
 
     json.dump(dic, open(save_path, 'w'), sort_keys=True, indent=4)
     print(dic)
 
+
 if __name__ == '__main__':
     main()
-
-
-
 
