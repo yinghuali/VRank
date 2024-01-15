@@ -61,7 +61,6 @@ def main():
     print("Accuracy: %.2f%%" % (scores[1] * 100))
     scores = M.evaluate(test_x, test_y, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1] * 100))
-    model.save(path_save)
 
 
 if __name__ == '__main__':
