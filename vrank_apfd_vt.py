@@ -11,14 +11,34 @@ from get_rank_idx import *
 from scipy.stats import entropy
 from get_frame_fearure import get_all_frame_feaure
 
+import argparse
+ap = argparse.ArgumentParser()
+ap.add_argument("--path_model_save", type=str, default='')
+ap.add_argument("--path_frame", type=str, default='')
+ap.add_argument("--path_x", type=str, default='')
+ap.add_argument("--path_y", type=str, default='')
+ap.add_argument("--path_x_embedding", type=str, default='')
+ap.add_argument("--save_path", type=str, default='')
+ap.add_argument("--num_classes", type=int, default='')
 
-path_model_save = './target_models/hmdb51_vt.h5'
-path_frame = './pkl_data/hmdb51/hmdb51_x.pkl'
-path_x = './pkl_data/hmdb51/vt_hmdb51_x.pkl'
-path_y = './pkl_data/hmdb51/hmdb51_y.pkl'
-path_x_embedding = './pkl_data/hmdb51/hmdb51_x_embedding.pkl'
-save_path = './results/vt_hmdb51_x.json'
-num_classes = 51
+
+args = vars(ap.parse_args())
+
+path_model_save = args['path_model_save']
+path_frame = args['path_frame']
+path_x = args['path_x']
+path_y = args['path_y']
+path_x_embedding = args['path_x_embedding']
+save_path = args['save_path']
+num_classes = args['num_classes']
+
+# path_model_save = './target_models/hmdb51_vt.h5'
+# path_frame = './pkl_data/hmdb51/hmdb51_x.pkl'
+# path_x = './pkl_data/hmdb51/vt_hmdb51_x.pkl'
+# path_y = './pkl_data/hmdb51/hmdb51_y.pkl'
+# path_x_embedding = './pkl_data/hmdb51/hmdb51_x_embedding.pkl'
+# save_path = './results/vt_hmdb51_x.json'
+# num_classes = 51
 
 
 model = load_model(path_model_save, custom_objects={'PositionalEmbedding': PositionalEmbedding, 'TransformerEncoder': TransformerEncoder})
