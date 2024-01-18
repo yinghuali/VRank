@@ -12,12 +12,9 @@ ap.add_argument("--save_path_y", type=str)
 args = ap.parse_args()
 
 # python get_video_frame_extraction.py --data_name 'ucf101' --video_dir './data/UCF-101' --save_path_x './data/pkl_data/ucf101/ucf101_x.pkl' --save_path_y './data/pkl_data/ucf101/ucf101_y.pkl'
-# python get_video_frame_extraction.py --data_name 'ucf101' --video_dir './data' --save_path_x './data/pkl_data/ucf101/ucf101_x.pkl' --save_path_y './data/pkl_data/ucf101/ucf101_y.pkl'
-
 # python get_video_frame_extraction.py --data_name 'hmdb51' --video_dir '/raid/yinghua/VRank/data/hmdb51' --save_path_x '/raid/yinghua/VRank/data/pkl_data/hmdb51/hmdb51_x.pkl' --save_path_y '/raid/yinghua/VRank/data/pkl_data/hmdb51/hmdb51_y.pkl'
-# python get_video_frame_extraction.py --data_name 'charades' --video_dir '/raid/yinghua/VRank/data/charades/Charades_v1_480' --save_path_x '/raid/yinghua/VRank/data/pkl_data/charades/charades_x.pkl' --save_path_y '/raid/yinghua/VRank/data/pkl_data/charades/charades_y.pkl'
-# python get_video_frame_extraction.py --data_name 'hollywood2' --video_dir '/raid/yinghua/VRank/data/hollywood2/Hollywood2/AVIClips' --save_path_x '/raid/yinghua/VRank/data/pkl_data/hollywood2/hollywood2_x.pkl' --save_path_y '/raid/yinghua/VRank/data/pkl_data/hollywood2/hollywood2_y.pkl'
 # python get_video_frame_extraction.py --data_name 'accident' --video_dir '/raid/yinghua/VRank/data/hwid12/Video-Accident-Dataset' --save_path_x '/raid/yinghua/VRank/data/pkl_data/accident/accident_x.pkl' --save_path_y '/raid/yinghua/VRank/data/pkl_data/accident/accident_y.pkl'
+
 
 def get_path(path_dir_compile):
     path_list = []
