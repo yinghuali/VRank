@@ -151,4 +151,5 @@ old1_results/*
 final_results/*
 vrank_diff_frame.py
 vrank_diff_frame_vt.py
+*.pptx
 
